@@ -15,8 +15,7 @@ public class Login {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "loginDateTime")
-    private LocalDateTime loginDateTime = LocalDateTime.now();
+    private LocalDateTime loginDateTime;
 
     @ManyToOne
     private User user;

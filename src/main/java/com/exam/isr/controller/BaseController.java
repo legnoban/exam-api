@@ -3,11 +3,14 @@ package com.exam.isr.controller;
 import com.exam.isr.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @BasePathAwareController
 public class BaseController {
@@ -22,8 +25,10 @@ public class BaseController {
         this.loginService = loginService;
     }
 
-    @GetMapping("/aa")
-    public List<Object> getAllUniqueLoginDates() {
-        return loginService.getAllUniqueLoginDates();
+    @GetMapping("/dd")
+    public ResponseEntity<List<String>> getAllUniqueLoginDates() {
+        List<Date> result = loginService.getAllUniqueLoginDates();
+        List<String> resultStr = result.stream().map( r -> r.toString()).collect(Collectors.toList());
+        return new ResponseEntity<>(resultStr, HttpStatus.OK);
     }
 }

@@ -5,8 +5,7 @@ import com.exam.isr.persistence.repository.LoginRepositoryResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.sql.Date;
 import java.util.List;
 
 @Service
@@ -21,8 +20,9 @@ public class LoginService {
         this.loginRepository = loginRepository;
     }
 
-    public List<Object> getAllUniqueLoginDates() {
-        return loginRepository.findAllUniqueDates();
+    public List<Date> getAllUniqueLoginDates() {
+        List<Date> dates = loginRepository.findAllUniqueDates();
+        return dates;
     }
 
 }
