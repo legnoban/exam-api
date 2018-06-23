@@ -1,11 +1,13 @@
 package com.exam.isr.model;
 
+import com.exam.isr.config.LocalDateTimeAttributeConverter;
 import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @ApiModel
+@Table(name = "login")
 @Entity
 public class Login {
 
@@ -13,7 +15,8 @@ public class Login {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private LocalDateTime loginDateTime;
+    @Column(name = "loginDateTime")
+    private LocalDateTime loginDateTime = LocalDateTime.now();
 
     @ManyToOne
     private User user;

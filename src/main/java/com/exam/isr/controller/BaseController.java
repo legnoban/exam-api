@@ -3,8 +3,10 @@ package com.exam.isr.controller;
 import com.exam.isr.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
+import org.springframework.web.bind.annotation.GetMapping;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @BasePathAwareController
@@ -20,7 +22,8 @@ public class BaseController {
         this.loginService = loginService;
     }
 
-    public List<LocalDate> getAllUniqueLoginDates() {
+    @GetMapping("/aa")
+    public List<Object> getAllUniqueLoginDates() {
         return loginService.getAllUniqueLoginDates();
     }
 }

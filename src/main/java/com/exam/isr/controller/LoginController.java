@@ -1,12 +1,9 @@
 package com.exam.isr.controller;
 
-import com.exam.isr.model.Login;
 import com.exam.isr.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.BasePathAwareController;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import java.util.List;
 
 //TOD http://server/test/logins?start=YYYYMMDD&end=YYYYMMDD&attribute1=AAA&attribute2=BBB&attribute3=CCC&attribute4=DDD
 //Retrieves a JSON object where the key is the user name and the value is the number of times a user logged on between the start and the end date.
@@ -26,8 +23,8 @@ public class LoginController {
     }
 
     @GetMapping("dates")
-    public List<String> getLoginDates() {
-        return loginService.getDistinctLoginDates();
+    public Object getLoginDates() {
+        return loginService.getAllUniqueLoginDates();
     }
 
 

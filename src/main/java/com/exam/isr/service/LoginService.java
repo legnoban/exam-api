@@ -1,35 +1,28 @@
 package com.exam.isr.service;
 
 import com.exam.isr.persistence.repository.LoginRepository;
+import com.exam.isr.persistence.repository.LoginRepositoryResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class LoginService {
 
+    private LoginRepositoryResource loginRepositoryResource;
     private LoginRepository loginRepository;
 
     @Autowired
-    public LoginService(LoginRepository loginRepository) {
+    public LoginService(LoginRepositoryResource loginRepositoryResource, LoginRepository loginRepository) {
+        this.loginRepositoryResource = loginRepositoryResource;
         this.loginRepository = loginRepository;
     }
 
-    public String test() {
-        return "test login";
-    }
-
-    public List<String> getDistinctLoginDates() {
-//        return loginRepository.findAllByLoginDateTime();
-        return new ArrayList<>();
-    }
-
-    public List<LocalDate> getAllUniqueLoginDates() {
-//        return loginRepository.findAllDistinctLoginDates();
-        return new ArrayList<>();
+    public List<Object> getAllUniqueLoginDates() {
+        return loginRepository.findAllUniqueDates();
     }
 
 }

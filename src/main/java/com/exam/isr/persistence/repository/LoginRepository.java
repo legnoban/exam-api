@@ -1,16 +1,14 @@
 package com.exam.isr.persistence.repository;
 
 import com.exam.isr.model.Login;
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
 import java.util.List;
 
-@RepositoryRestResource(collectionResourceRel = "login", path = "login")
-public interface LoginRepository extends PagingAndSortingRepository<Login, Long> {
+public interface LoginRepository extends JpaRepository<Login, Long> {
 
-//    List<String> findAllByLoginDateTime();
-//
-//    List<LocalDate> findAllDistinctLoginDates();
+    @Query(value = "SELECT DISTINCT TO_DATE(l.login_date_time, 'yyyy-MM-dd') FROM login as l", nativeQuery = true)
+    List<Object> findAllUniqueDates();
 }

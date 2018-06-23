@@ -3,6 +3,7 @@ package com.exam.isr.persistence;
 import com.exam.isr.model.Login;
 import com.exam.isr.model.User;
 import com.exam.isr.persistence.repository.LoginRepository;
+import com.exam.isr.persistence.repository.LoginRepositoryResource;
 import com.exam.isr.persistence.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -40,7 +41,7 @@ public class DataLoader implements ApplicationRunner {
 
         for(int i=0; i<50; i++) {
             User user = userRepository.save(new User("jogowo", "yeoow@gmail.com"));
-            Login login = new Login(localDateTime.plus(2, ChronoUnit.WEEKS), user);
+            Login login = new Login(LocalDateTime.now(), user);
             login.setAttribute1("attrX");
             login.setAttribute3("attrZ");
             loginRepository.save(login);

@@ -23,6 +23,5 @@ public class SwaggerConfig {
                 .build();
 
         //todo read from properties file
-
     }
 }
