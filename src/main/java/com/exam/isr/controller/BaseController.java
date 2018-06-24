@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,9 +24,9 @@ public class BaseController {
         this.loginService = loginService;
     }
 
-    @GetMapping("/dd")
+    @GetMapping("/dates")
     public ResponseEntity<List<String>> getAllUniqueLoginDates() {
-        List<Date> result = loginService.getAllUniqueLoginDates();
+        List<Date> result = loginService.getAllUniqueLoginDatesAsc();
         List<String> resultStr = result.stream().map( r -> r.toString()).collect(Collectors.toList());
         return new ResponseEntity<>(resultStr, HttpStatus.OK);
     }

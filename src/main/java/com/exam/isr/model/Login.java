@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 @ApiModel
 @Table(name = "login")
 @Entity
+@NamedNativeQuery(
+        name = "Login.findAllUniqueDates",
+        query = "SELECT DISTINCT CAST(LOGIN_DATE_TIME as DATE) FROM LOGIN ORDER BY CAST(LOGIN_DATE_TIME as DATE)")
 public class Login {
 
     @Id
