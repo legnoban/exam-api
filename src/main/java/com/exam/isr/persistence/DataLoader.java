@@ -29,7 +29,7 @@ public class DataLoader implements ApplicationRunner {
 
     public void run(ApplicationArguments args) {
         LocalDateTime localDateTime = LocalDateTime.of(2015, Month.JANUARY, 01, 02, 03, 05);
-        for(int i=0; i<50_000; i++) {
+        for(int i=0; i<50; i++) {
             localDateTime = localDateTime.plus(2, ChronoUnit.WEEKS);
             User user = userRepository.save(new User("ewef", "eowoe@gmail.com"));
             Login login = new Login(localDateTime, user);
@@ -39,7 +39,7 @@ public class DataLoader implements ApplicationRunner {
             loginRepository.save(login);
         }
 
-        for(int i=0; i<50_000; i++) {
+        for(int i=0; i<50; i++) {
             localDateTime = localDateTime.plus(2, ChronoUnit.MONTHS);
             User user = userRepository.save(new User("jogowo", "yeoow@gmail.com"));
             Login login = new Login(localDateTime, user);
@@ -48,7 +48,7 @@ public class DataLoader implements ApplicationRunner {
             loginRepository.save(login);
         }
 
-        for(int i=0; i<50_000; i++) {
+        for(int i=0; i<50; i++) {
             localDateTime = localDateTime.plus(2, ChronoUnit.MONTHS);
             User user = userRepository.save(new User("iooow", "ppooe@gmail.com"));
             Login login = new Login(localDateTime, user);
@@ -57,7 +57,7 @@ public class DataLoader implements ApplicationRunner {
             loginRepository.save(login);
         }
 
-        for(int i=0; i<50_000; i++) {
+        for(int i=0; i<50; i++) {
             localDateTime = localDateTime.plus(2, ChronoUnit.MONTHS);
             User user = userRepository.save(new User("goowoe", "ppooe@yeoow.com"));
             Login login = new Login(localDateTime, user);
