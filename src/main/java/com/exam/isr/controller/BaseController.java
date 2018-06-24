@@ -14,9 +14,6 @@ import java.util.stream.Collectors;
 @BasePathAwareController
 public class BaseController {
 
-    //TODO http://server/test/dates
-    //Retrieves a JSON array of all the unique dates (ignoring time) in the table
-    //The resulting JSON array needs to be sorted ascending
     private LoginService loginService;
 
     @Autowired

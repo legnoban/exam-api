@@ -6,17 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static com.exam.isr.persistence.specs.LoginSpecs.filterByAttr1;
-import static com.exam.isr.persistence.specs.LoginSpecs.filterByAttr2;
-import static com.exam.isr.persistence.specs.LoginSpecs.filterByAttr3;
+import static com.exam.isr.persistence.specs.LoginSpecs.*;
 import static org.springframework.data.jpa.domain.Specifications.where;
 
 @Service
@@ -30,41 +25,117 @@ public class LoginService {
     }
 
     public List<Date> getAllUniqueLoginDatesAsc() {
-        List<Date> dates = loginRepository.findAllUniqueDates();
-        return dates;
+        return loginRepository.findAllUniqueDates();
     }
 
-    public List<Login> getLogins(Optional<String> attr1, Optional<String> attr2, Optional<String> attr3) {
+    public List<Login> getLogins(Optional<String> attr1, Optional<String> attr2, Optional<String> attr3, Optional<LocalDate> start, Optional<LocalDate> end) {
         List<Login> result;
-        Specification<Login> loginSpecs = null;
+        Specification<Login> specs = null;
 
-        if(attr1.isPresent() && attr2.isPresent() && attr3.isPresent()){
-            loginSpecs = where(filterByAttr1(attr1.get()))
+        //todo: Find a way to build CriteriaBuilder or the Predicate
+        //todo: Split for method dates processing
+        if (attr1.isPresent() && attr2.isPresent() && attr3.isPresent() && start.isPresent() && end.isPresent()) {
+            specs = where(filterByAttr1(attr1.get()))
+                    .and(filterByAttr2(attr2.get()))
+                    .and(filterByAttr3(attr3.get()))
+                    .and(filterByStartDate(start.get()))
+                    .and(filterByEndDate(end.get()));
+        } else if (attr1.isPresent() && attr2.isPresent() && !attr3.isPresent() && start.isPresent() && end.isPresent()) {
+            specs = where(filterByAttr1(attr1.get()))
+                    .and(filterByAttr2(attr2.get()))
+                    .and(filterByStartDate(start.get()))
+                    .and(filterByEndDate(end.get()));
+        } else if (attr1.isPresent() && !attr2.isPresent() && attr3.isPresent() && start.isPresent() && end.isPresent()) {
+            specs = where(filterByAttr1(attr1.get()))
+                    .and(filterByAttr3(attr3.get()))
+                    .and(filterByStartDate(start.get()))
+                    .and(filterByEndDate(end.get()));
+        } else if (attr1.isPresent() && !attr2.isPresent() && !attr3.isPresent() && start.isPresent() && end.isPresent()) {
+            specs = where(filterByAttr1(attr1.get()))
+                    .and(filterByStartDate(start.get()))
+                    .and(filterByEndDate(end.get()));
+        } else if (!attr1.isPresent() && attr2.isPresent() && attr3.isPresent() && start.isPresent() && end.isPresent()) {
+            specs = where(filterByAttr2(attr2.get()))
+                    .and(filterByAttr3(attr3.get()))
+                    .and(filterByStartDate(start.get()))
+                    .and(filterByEndDate(end.get()));
+        } else if (!attr1.isPresent() && !attr2.isPresent() && attr3.isPresent() && start.isPresent() && end.isPresent()) {
+            specs = where(filterByAttr3(attr3.get()))
+                    .and(filterByStartDate(start.get()))
+                    .and(filterByEndDate(end.get()));
+        }
+
+        else if (attr1.isPresent() && attr2.isPresent() && attr3.isPresent() && start.isPresent() && !end.isPresent()) {
+            specs = where(filterByAttr1(attr1.get()))
+                    .and(filterByAttr2(attr2.get()))
+                    .and(filterByAttr3(attr3.get()))
+                    .and(filterByStartDate(start.get()));
+        } else if (attr1.isPresent() && attr2.isPresent() && !attr3.isPresent() && start.isPresent() && !end.isPresent()) {
+            specs = where(filterByAttr1(attr1.get()))
+                    .and(filterByAttr2(attr2.get()))
+                    .and(filterByStartDate(start.get()));
+        } else if (attr1.isPresent() && !attr2.isPresent() && attr3.isPresent() && start.isPresent() && !end.isPresent()) {
+            specs = where(filterByAttr1(attr1.get()))
+                    .and(filterByAttr3(attr3.get()))
+                    .and(filterByStartDate(start.get()));
+        } else if (attr1.isPresent() && !attr2.isPresent() && !attr3.isPresent() && start.isPresent() && !end.isPresent()) {
+            specs = where(filterByAttr1(attr1.get()))
+                    .and(filterByStartDate(start.get()));
+        } else if (!attr1.isPresent() && attr2.isPresent() && attr3.isPresent() && start.isPresent() && !end.isPresent()) {
+            specs = where(filterByAttr2(attr2.get()))
+                    .and(filterByAttr3(attr3.get()))
+                    .and(filterByStartDate(start.get()));
+        } else if (!attr1.isPresent() && !attr2.isPresent() && attr3.isPresent() && start.isPresent() && !end.isPresent()) {
+            specs = where(filterByAttr3(attr3.get()))
+                    .and(filterByStartDate(start.get()));
+        }
+
+        else if (attr1.isPresent() && attr2.isPresent() && attr3.isPresent() && !start.isPresent() && end.isPresent()) {
+            specs = where(filterByAttr1(attr1.get()))
+                    .and(filterByAttr2(attr2.get()))
+                    .and(filterByAttr3(attr3.get()))
+                    .and(filterByEndDate(end.get()));
+        } else if (attr1.isPresent() && attr2.isPresent() && !attr3.isPresent() && !start.isPresent() && end.isPresent()) {
+            specs = where(filterByAttr1(attr1.get()))
+                    .and(filterByAttr2(attr2.get()))
+                    .and(filterByEndDate(end.get()));
+        } else if (attr1.isPresent() && !attr2.isPresent() && attr3.isPresent() && !start.isPresent() && end.isPresent()) {
+            specs = where(filterByAttr1(attr1.get()))
+                    .and(filterByAttr3(attr3.get()))
+                    .and(filterByEndDate(end.get()));
+        } else if (attr1.isPresent() && !attr2.isPresent() && !attr3.isPresent() && !start.isPresent() && end.isPresent()) {
+            specs = where(filterByAttr1(attr1.get()))
+                    .and(filterByEndDate(end.get()));
+        } else if (!attr1.isPresent() && attr2.isPresent() && attr3.isPresent() && !start.isPresent() && end.isPresent()) {
+            specs = where(filterByAttr2(attr2.get()))
+                    .and(filterByAttr3(attr3.get()))
+                    .and(filterByEndDate(end.get()));
+        } else if (!attr1.isPresent() && !attr2.isPresent() && attr3.isPresent() && !start.isPresent() && end.isPresent()) {
+            specs = where(filterByAttr3(attr3.get()))
+                    .and(filterByEndDate(end.get()));
+        }
+        else if (attr1.isPresent() && attr2.isPresent() && attr3.isPresent() && !start.isPresent() && !end.isPresent()) {
+            specs = where(filterByAttr1(attr1.get()))
                     .and(filterByAttr2(attr2.get()))
                     .and(filterByAttr3(attr3.get()));
-        }
-        else if(attr1.isPresent() && attr2.isPresent() && !attr3.isPresent()) {
-            loginSpecs = where(filterByAttr1(attr1.get()))
+        } else if (attr1.isPresent() && attr2.isPresent() && !attr3.isPresent() && !start.isPresent() && !end.isPresent()) {
+            specs = where(filterByAttr1(attr1.get()))
                     .and(filterByAttr2(attr2.get()));
-        }
-        else if(attr1.isPresent() && !attr2.isPresent() && attr3.isPresent()) {
-            loginSpecs = where(filterByAttr1(attr1.get()))
+        } else if (attr1.isPresent() && !attr2.isPresent() && attr3.isPresent() && !start.isPresent() && !end.isPresent()) {
+            specs = where(filterByAttr1(attr1.get()))
                     .and(filterByAttr3(attr3.get()));
-        }
-        else if(attr1.isPresent() && !attr2.isPresent() && !attr3.isPresent()) {
-            loginSpecs = where(filterByAttr1(attr1.get()));
-        }
-        else if(!attr1.isPresent() && attr2.isPresent() && attr3.isPresent()) {
-            loginSpecs = where(filterByAttr2(attr2.get()))
+        } else if (attr1.isPresent() && !attr2.isPresent() && !attr3.isPresent() && !start.isPresent() && !end.isPresent()) {
+            specs = where(filterByAttr1(attr1.get()));
+        } else if (!attr1.isPresent() && attr2.isPresent() && attr3.isPresent() && !start.isPresent() && !end.isPresent()) {
+            specs = where(filterByAttr2(attr2.get()))
                     .and(filterByAttr3(attr3.get()));
-        }
-        else if(!attr1.isPresent() && !attr2.isPresent() && attr3.isPresent()) {
-            loginSpecs = where(filterByAttr3(attr3.get()));
+        } else if (!attr1.isPresent() && !attr2.isPresent() && attr3.isPresent() && !start.isPresent() && !end.isPresent()) {
+            specs = where(filterByAttr3(attr3.get()));
         }
 
-        result =  loginRepository.findAll(loginSpecs);
+        result = loginRepository.findAll(specs);
 
-        if(loginSpecs == null) {
+        if (specs == null) {
             result = loginRepository.findAll();
         }
 

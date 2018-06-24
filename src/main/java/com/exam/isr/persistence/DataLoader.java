@@ -3,7 +3,6 @@ package com.exam.isr.persistence;
 import com.exam.isr.model.Login;
 import com.exam.isr.model.User;
 import com.exam.isr.persistence.repository.LoginRepository;
-import com.exam.isr.persistence.repository.LoginRepositoryResource;
 import com.exam.isr.persistence.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -30,21 +29,41 @@ public class DataLoader implements ApplicationRunner {
 
     public void run(ApplicationArguments args) {
         LocalDateTime localDateTime = LocalDateTime.of(2015, Month.JANUARY, 01, 02, 03, 05);
-        for(int i=0; i<50; i++) {
+        for(int i=0; i<50_000; i++) {
+            localDateTime = localDateTime.plus(2, ChronoUnit.WEEKS);
             User user = userRepository.save(new User("ewef", "eowoe@gmail.com"));
-            Login login = new Login(localDateTime.plus(2, ChronoUnit.WEEKS), user);
+            Login login = new Login(localDateTime, user);
             login.setAttribute1("attrA");
             login.setAttribute2("attrB");
             login.setAttribute3("attrC  ");
             loginRepository.save(login);
         }
 
-        for(int i=0; i<50; i++) {
+        for(int i=0; i<50_000; i++) {
+            localDateTime = localDateTime.plus(2, ChronoUnit.MONTHS);
             User user = userRepository.save(new User("jogowo", "yeoow@gmail.com"));
-            Login login = new Login(LocalDateTime.now(), user);
+            Login login = new Login(localDateTime, user);
             login.setAttribute1("attrX");
             login.setAttribute3("attrZ");
             loginRepository.save(login);
         }
+
+        for(int i=0; i<50_000; i++) {
+            localDateTime = localDateTime.plus(2, ChronoUnit.MONTHS);
+            User user = userRepository.save(new User("iooow", "ppooe@gmail.com"));
+            Login login = new Login(localDateTime, user);
+            login.setAttribute1("attrX");
+            login.setAttribute3("attrC");
+            loginRepository.save(login);
+        }
+
+        for(int i=0; i<50_000; i++) {
+            localDateTime = localDateTime.plus(2, ChronoUnit.MONTHS);
+            User user = userRepository.save(new User("goowoe", "ppooe@yeoow.com"));
+            Login login = new Login(localDateTime, user);
+            login.setAttribute2("attrF");
+            loginRepository.save(login);
+        }
+
     }
 }

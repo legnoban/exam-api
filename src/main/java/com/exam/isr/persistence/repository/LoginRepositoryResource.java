@@ -7,7 +7,4 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource(collectionResourceRel = "login", path = "login")
 public interface LoginRepositoryResource extends PagingAndSortingRepository<Login, Long> {
 
-//    List<String> findAllByLoginDateTime();
-//    List<LocalDate> findAllDistinctLoginDates();
-//    Collection<Login> findAllUniqueDates();
 }

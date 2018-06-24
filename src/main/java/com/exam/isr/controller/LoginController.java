@@ -9,16 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-//TOD http://server/test/logins?start=YYYYMMDD&end=YYYYMMDD&attribute1=AAA&attribute2=BBB&attribute3=CCC&attribute4=DDD
-//Retrieves a JSON object where the key is the user name and the value is the number of times a user logged on between the start and the end date.
-//All parameters are optional.
-//The values used for the attributes are used as filters, i.e. only the records should be counted for which the attribute values are equal to the ones specified in the parameters.
-//For one attribute, multiple values might be present, e.g.
-// http://server/test/logins?attribute1=AA1&attribute1=AA2&attribute1=AA3
+import static util.DateParser.parseDate;
 
 @BasePathAwareController
 public class LoginController {
@@ -30,18 +25,21 @@ public class LoginController {
         this.loginService = loginService;
     }
 
-    @GetMapping("/aa") // TODO Should use projection
-    public Object getLoginDates() {
-        return loginService.getAllUniqueLoginDatesAsc();
-    }
-
-    //http://server/test/logins?attribute1=AA1&attribute1=AA2&attribute1=AA3
-    //todo http://server/test/logins?start=YYYYMMDD&end=YYYYMMDD&attribute1=AAA&attribute2=BBB&attribute3=CCC&attribute4=DDD
     @GetMapping("/login")
-    public ResponseEntity<List<Login>> getLogins(@RequestParam(value = "attribute1", required= false) String attribute1, @RequestParam(value = "attribute2", required = false) String attribute2, @RequestParam(value = "attribute3", required = false) String attribute3) {
-        List<Login> result = loginService.getLogins(Optional.ofNullable(attribute1), Optional.ofNullable(attribute2), Optional.ofNullable(attribute3));
+    public ResponseEntity<List<Login>> getLogins(
+            @RequestParam(value = "attribute1", required= false) String attribute1,
+            @RequestParam(value = "attribute2", required = false) String attribute2,
+            @RequestParam(value = "attribute3", required = false) String attribute3,
+            @RequestParam(value = "start", required = false) String start,
+            @RequestParam(value = "end", required = false) String end) {
+
+        Optional<LocalDate> optionalStartDate = parseDate(start);
+        Optional<LocalDate> optionalEndDate = parseDate(end);
+
+        List<Login> result = loginService.getLogins(Optional.ofNullable(attribute1), Optional.ofNullable(attribute2), Optional.ofNullable(attribute3), optionalStartDate, optionalEndDate);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
 
 
 }

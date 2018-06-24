@@ -17,6 +17,10 @@ public class User {
 
     private String email;
 
+    //todo: Should not be here, query using id's only
+    @OneToMany
+    private List<Login> login;
+
     public User() {
     }
 
@@ -49,4 +53,11 @@ public class User {
         this.email = email;
     }
 
+    public List<Login> getLogin() {
+        return login;
+    }
+
+    public void setLogin(List<Login> login) {
+        this.login = login;
+    }
 }

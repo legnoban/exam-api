@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Projection(name = "dateOnly", types = Login.class)
 public interface DateOnly {
 
-    @Value("#{target.loginDateTime.toLocalDate()}") // move this operation to DB?
+    @Value("#{target.loginDateTime.toLocalDate()}")
     LocalDate getLoginDate();
 
 }

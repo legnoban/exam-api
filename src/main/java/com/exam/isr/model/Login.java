@@ -1,6 +1,5 @@
 package com.exam.isr.model;
 
-import com.exam.isr.config.LocalDateTimeAttributeConverter;
 import io.swagger.annotations.ApiModel;
 
 import javax.persistence.*;
@@ -13,6 +12,8 @@ import java.time.LocalDateTime;
         name = "Login.findAllUniqueDates",
         query = "SELECT DISTINCT CAST(LOGIN_DATE_TIME as DATE) FROM LOGIN ORDER BY CAST(LOGIN_DATE_TIME as DATE)")
 public class Login {
+
+    //todo: Use builder
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
